@@ -42,8 +42,8 @@ fun main() {
 
                 delete("/{id}") {
                     val id = call.parameters["id"]?.toInt() ?: error("Invalid delete request.")
-                    shoppingList.removeIf { it.id == id }
-                    call.respond(HttpStatusCode.OK)
+                    val itemToDelete = shoppingList.find { it.id == id } ?: error("Item with id {$id} not found.")
+                    call.respond(itemToDelete)
                 }
             }
 

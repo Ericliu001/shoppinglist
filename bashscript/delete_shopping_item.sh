@@ -1,0 +1,1 @@
+curl -X DELETE http://localhost:9090/shoppingList/-894313748
