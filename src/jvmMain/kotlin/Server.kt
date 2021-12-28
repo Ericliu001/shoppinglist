@@ -35,8 +35,9 @@ fun main() {
                 }
 
                 post {
-                    shoppingList.add(call.receive<ShoppingListItem>())
-                    call.respond(HttpStatusCode.OK)
+                    val receivedItem = call.receive<ShoppingListItem>()
+                    shoppingList.add(receivedItem)
+                    call.respond(HttpStatusCode.OK, receivedItem)
                 }
 
                 delete("/{id}") {
