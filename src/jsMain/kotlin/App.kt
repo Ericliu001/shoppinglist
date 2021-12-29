@@ -2,6 +2,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import react.Props
 import react.dom.h1
+import react.dom.html.ReactHTML.input
 import react.dom.li
 import react.dom.ul
 import react.functionComponent
@@ -31,4 +32,13 @@ val app = functionComponent<Props> {_ ->
             }
         }
     }
-}
+
+    child(inputComponent) {
+        attrs.onSubmit = { input ->
+            val cartItem = ShoppingListItem(input.replace("!", ""), input.count { it == '!' })
+            scope.launch {
+                addShoppingListItem(cartItem)
+                shoppingList = getShoppingList()
+            }
+        }
+    }}
