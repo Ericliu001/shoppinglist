@@ -1,16 +1,18 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
-val kotlinVersion = "1.5.31"
+val kotlinVersion = "1.6.10"
 val serializationVersion = "1.3.0"
 val ktorVersion = "1.6.5"
 val logbackVersion = "1.2.3"
-val reactVersion = "17.0.2-pre.265-kotlin-1.5.31"
+val reactVersion = "17.0.2-pre.286-kotlin-1.6.10"
 val kmongoVersion = "4.3.0"
+//val composeVersion = "v1.0.0"
 
 plugins {
-    kotlin("multiplatform") version "1.5.31"
+    kotlin("multiplatform") version "1.6.10"
     application //to run JVM part
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("plugin.serialization") version "1.6.10"
+    id("org.jetbrains.compose") version "1.0.1"
 }
 
 group = "org.example"
@@ -18,16 +20,17 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 kotlin {
     jvm {
         withJava()
     }
-    js {
-        browser {
-            binaries.executable()
-        }
+    js(IR) {
+        browser()
+        binaries.executable()
     }
     sourceSets {
         val commonMain by getting {
@@ -55,6 +58,8 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
+                implementation(compose.web.core)
+                implementation(compose.runtime)
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("io.ktor:ktor-client-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
